@@ -1,7 +1,7 @@
 #Adam's Text Analysis#
 import os.path
 import re
-import multiprocessing as mp
+#import multiprocessing as mp, maybe someday I will get you working
 
 
 class Analyser:
@@ -14,27 +14,24 @@ class Analyser:
         else:
             raise Exception(path + " is not a valid .txt file, ensure the location and file type are correct")
 
-    def __count_words_on_line(self, line):
-        words_count = {}
-        for word in line.split(" "):
-            if word in words_count:
-                words_count[word] += 1
-            else:
-                words_count[word] = 1
-        return words_count
+        print(self.__count_words())
 
     def __count_words(self):
         word_count = {}
         with open(self.__path, encoding="utf8") as file:
             for line in file:
-                line = self.__format_string(line)
-                for word in self.__count_words_on_line(line):
-                    if word in word_count:
-                        word_count[word] += 1
-                    else:
-                        word_count[word] = 1
+                self.__count_line(word_count, line)
+
         file.close()
         return word_count
+
+    def __count_line(self, word_count, line):
+        for word in self.__format_string(line).split(" "):
+            if word != "":
+                if word in word_count:
+                    word_count[word] += 1
+                else:
+                    word_count[word] = 1
 
     def __format_string(self, string):
         string = string.lower()
@@ -42,5 +39,5 @@ class Analyser:
         string = string.replace("_", "")
         return string
 
-
+myanalyser = Analyser()
 
