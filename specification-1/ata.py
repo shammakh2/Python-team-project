@@ -15,18 +15,20 @@ class Analyser:
         else:
             raise Exception(path + " is not a valid .txt file, ensure the location and file type are correct")
 
-    def __count_words(self):
+    def count_words(self, raw = False):
         """counts how many times a word appears in the file"""
         word_count = {}
         with open(self.__path, encoding="utf8") as file:
             for line in file:
-                self.__count_line(word_count, line)
+                self.__count_line(word_count, line, raw)
         file.close()
         return word_count
 
-    def __count_line(self, word_count, line):
+    def __count_line(self, word_count, line, raw = False):
         """counts how many times a word appears in a string"""
-        for word in self.__format_string(line).split(" "):
+        if raw == False:
+            line = self.__format_string(line)
+        for word in line.split(" "):
             if word != "":
                 if word in word_count:
                     word_count[word] += 1
@@ -39,6 +41,4 @@ class Analyser:
         string = re.sub(r"[^\w]", " ", string)
         string = string.replace("_", "")
         return string
-
-
 
