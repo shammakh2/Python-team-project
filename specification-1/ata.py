@@ -1,7 +1,8 @@
 #Adam's Text Analysis#
 import os.path
-import matplotlib
+import matplotlib.pyplot as plot
 import re
+import matplotlib
 #import multiprocessing as mp, maybe someday I will get you working
 
 
@@ -36,9 +37,24 @@ class Analyser:
                 else:
                     word_count[word] = 1
 
+    def produce_graph(self):
+        godwillsit = False
+        if godwillsit:
+            self.count_words()
+            r = range(0, len(self.__word_count))
+            plot.figure()
+            plot.ion()
+            plot.bar(r, self.__word_count.values())
+            plot.xticks(r, self.__word_count.keys())
+            plot.tight_layout()
+            plot.show()
+
     def __format_string(self, string):
         """removes non-alphanumeric characters and makes a string lowercase"""
         string = string.lower()
         string = re.sub(r"[^\w]", " ", string)
         string = string.replace("_", "")
         return string
+
+myanalyser = Analyser()
+myanalyser.produce_graph()
