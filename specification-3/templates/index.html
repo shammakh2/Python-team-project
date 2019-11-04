@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }} - Team 48</title>
-    <a href="{{ url_for('page_1') }}">Page 1</a>
-    <a href="{{ url_for('page_2') }}">Page 2</a>
-</head>
-<body>
-    <h1>Hello user! {{ message }}</h1>
-</body>
+    <style>
+        a {
+            color: coral;
+            font-family: Verdana;
+            font-size: 20px;
+
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-family: Verdana;
+            font-size: 50px;
+            border-bottom: 6px solid coral;
+            background-color: lightgrey;
+        }
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ title }} - Team 48</title>
+        <link href="./style.css" rel="StyleSheet">
+        <a href="{{ url_for('home') }}">Home</a><a> | </a>
+        <a href="{{ url_for('page_1') }}">Specification 1</a><a> | </a>
+        <a href="{{ url_for('page_2') }}">Specification 2</a><a> | </a>
+        <a href="{{ url_for('page_3') }}">Specification 3</a><a> | </a>
+        <a href="{{ url_for('page_4') }}">Specification 4</a>
+    </head>
+    <body>
+        <h1>{{ header }}</h1>
+    </body>
 </html>
