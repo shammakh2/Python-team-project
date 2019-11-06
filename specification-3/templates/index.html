@@ -22,19 +22,32 @@
             font-size: 20px;
 
         }
+        div{
+            max-width: 900px;
+            min-width: 200px;
+            padding-left: 2%;
+            padding-right: 2%;
+            text-align: center;
+            margin: auto;
+        }
     </style>
     <head>
         <meta charset="UTF-8">
         <title>{{ title }} - Team 48</title>
         <link href="./style.css" rel="StyleSheet">
-        <a href="{{ url_for('home') }}">Home</a><a> | </a>
-        <a href="{{ url_for('page_1') }}">Specification 1</a><a> | </a>
-        <a href="{{ url_for('page_2') }}">Specification 2</a><a> | </a>
-        <a href="{{ url_for('page_3') }}">Specification 3</a><a> | </a>
-        <a href="{{ url_for('page_4') }}">Specification 4</a>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a><a> | </a>
+            <a href="{{ url_for('page_1') }}">Specification 1</a><a> | </a>
+            <a href="{{ url_for('page_2') }}">Specification 2</a><a> | </a>
+            <a href="{{ url_for('page_3') }}">Specification 3</a><a> | </a>
+            <a href="{{ url_for('page_4') }}">Specification 4</a>
+        </div>
+
     </head>
     <body>
+    <div>
         <h1>{{ header }}</h1>
         <p>{{ message }}</p>
+    </div>
     </body>
 </html>
