@@ -34,7 +34,6 @@
     <head>
         <meta charset="UTF-8">
         <title>{{ title }} - Team 48</title>
-        <link href="./style.css" rel="StyleSheet">
         <div>
             <a href="{{ url_for('home') }}">Home</a><a> | </a>
             <a href="{{ url_for('page_1') }}">Specification 1</a><a> | </a>
@@ -42,14 +41,19 @@
             <a href="{{ url_for('page_3') }}">Specification 3</a><a> | </a>
             <a href="{{ url_for('page_4') }}">Specification 4</a>
         </div>
-
     </head>
     <body>
     <div>
         <h1>{{ header }}</h1>
-        <p>{{ message }}</p>
-        <p>{{ code }}</p>
-        <iframe width="560" height="315" src="https://nucode.ncl.ac.uk/scomp/stage1/csc1034/teams/team-48/practical-3/blob/master/specification-4/README.md" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p>README:</p>
+        <textarea id="message_part" rows="25" cols="100">There should be a message here. Is JavaScript running?</textarea><br>
+        <p>Code:</p>
+        <textarea id="code_part"rows="25" cols="100">There should be a message here. Is JavaScript running?</textarea>
+        <script>
+            //{{ code }} is the python variable passed to the javaScript. .replace('&amp;#10;','&#10;') prevents javascript from automatically converting my newline code into text
+            document.getElementById("message_part").innerHTML= "{{ message }}".replace(/&amp;#10;/g,'&#10;');
+            document.getElementById("code_part").innerHTML= "{{ code }}".replace(/&amp;#10;/g,'&#10;');
+        </script>
     </div>
     </body>
 </html>
