@@ -7,12 +7,12 @@ home_message= "Hello Team 48! This is the homepage to the web app. This web app'
               " in a web interface. You can navigate by clicking the hyperlinks at the top."
 
 spec_1_header="Text Frequency Analyser"
-global spec_1_message
 
+global spec_1_message
 spec_1_message=""
 with open("../specification-1/README.md", "r") as file:
     for line in file:
-        spec_1_message= spec_1_message.rstrip() + line.rstrip() + "&#10;"
+        spec_1_message= spec_1_message.rstrip() + line.rstrip() + "&#10;" # &#10; is the line feed character similar to \n
 
 global spec_1_python
 spec_1_python=""
@@ -59,6 +59,7 @@ with open("../specification-4/README.md", "r") as file:
 
 @app.route('/')
 def home():
+    #title, header, message and code are all variables. When FLask finds {{ title }} in the HTML it replaces it with the value passed here
     return render_template('index.html', title="Homepage", header="Home Page",  message= home_message, code= "")
 
 @app.route('/page_1')
