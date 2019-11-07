@@ -44,9 +44,9 @@
     <div>
         <h1>{{ header }}</h1>
         <p>README:</p>
-        <textarea id="message_part" rows="25" cols="100">There should be a message here. Is JavaScript running?</textarea><br>
+        <textarea id="message_part" rows="25" cols="100" readonly>There should be a message here. Is JavaScript running?</textarea><br>
         <p>Code:</p>
-        <textarea id="code_part"rows="25" cols="100">There should be a message here. Is JavaScript running?</textarea>
+        <textarea id="code_part"rows="25" cols="100" readonly>There should be a message here. Is JavaScript running?</textarea>
         <script>
             //{{ code }} is the python variable passed to the javaScript. .replace('&amp;#10;','&#10;') prevents javascript from automatically converting my newline code into text
             document.getElementById("message_part").innerHTML= "{{ message }}".replace(/&amp;#10;/g,'&#10;');

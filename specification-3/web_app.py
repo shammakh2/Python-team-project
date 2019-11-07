@@ -1,6 +1,5 @@
-from flask import Flask, send_from_directory, make_response
+from flask import Flask
 from flask import render_template
-import os.path
 
 app = Flask(__name__)
 home_message= "Hello Team 48! This is the homepage to the web app. This web app's purpose is to represent our teams work" \
