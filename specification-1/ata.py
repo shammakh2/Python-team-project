@@ -9,7 +9,7 @@ import matplotlib
 class Analyser:
     __path = ""
     __word_count = {}
-    def __init__(self, path=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0] + "\\resources\\txt\\test"
+    def __init__(self, path=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0] + "\\resources\\txt\\book"
                                                                                              ".txt"):
         """checks the file passed actually exists"""
         if os.path.isfile(path) and path.endswith(".txt"):
@@ -24,6 +24,8 @@ class Analyser:
                 for line in file:
                  self.__count_line(self.__word_count, line, raw)
             file.close()
+
+        self.__word_count = self.__order_dictionary(self.__word_count)
         return self.__word_count
 
     def __count_line(self, word_count, line, raw = False):
@@ -37,11 +39,21 @@ class Analyser:
                 else:
                     word_count[word] = 1
 
-    def produce_graph(self):
+    def word_graph(self):
+        """"produces a bar chart of the word frequency"""
         self.count_words()
-        plot.bar(range(len(self.__word_count)), self.__word_count.values(), align='center')
-        plot.xticks(range(len(self.__word_count)), list(self.__word_count.keys()))
-        plot.show()
+        self.__produce_graph(self.__word_count)
+
+
+    def __order_dictionary(self, dictionary):
+        """sorts a dictionary in descending order of the value"""
+        templist = []
+        for key in dictionary:
+            templist.append((key, dictionary[key]))
+
+        templist = sorted(templist, key=lambda x: x[1], reverse=True)
+        return dict(templist)
+
 
     def __format_string(self, string):
         """removes non-alphanumeric characters and makes a string lowercase"""
@@ -50,5 +62,8 @@ class Analyser:
         string = string.replace("_", "")
         return string
 
-myanalyser = Analyser()
-myanalyser.produce_graph()
+    def __produce_graph(self, dictionary):
+        """produces a graph of a dictionary"""
+        plot.bar(range(len(dictionary)), dictionary.values(), align='center')
+        plot.xticks(range(len(dictionary)), list(dictionary.keys()))
+        plot.show()
