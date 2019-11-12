@@ -9,7 +9,7 @@ import matplotlib
 class Analyser:
     __path = ""
     __word_count = {}
-    def __init__(self, path=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0] + "\\resources\\txt\\book"
+    def __init__(self, path=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0] + "\\resources\\txt\\test"
                                                                                              ".txt"):
         """checks the file passed actually exists"""
         if os.path.isfile(path) and path.endswith(".txt"):
@@ -38,16 +38,10 @@ class Analyser:
                     word_count[word] = 1
 
     def produce_graph(self):
-        godwillsit = False
-        if godwillsit:
-            self.count_words()
-            r = range(0, len(self.__word_count))
-            plot.figure()
-            plot.ion()
-            plot.bar(r, self.__word_count.values())
-            plot.xticks(r, self.__word_count.keys())
-            plot.tight_layout()
-            plot.show()
+        self.count_words()
+        plot.bar(range(len(self.__word_count)), self.__word_count.values(), align='center')
+        plot.xticks(range(len(self.__word_count)), list(self.__word_count.keys()))
+        plot.show()
 
     def __format_string(self, string):
         """removes non-alphanumeric characters and makes a string lowercase"""
