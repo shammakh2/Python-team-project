@@ -2,13 +2,14 @@
 import os.path
 import matplotlib.pyplot as plot
 import re
-import matplotlib
+import csv
 #import multiprocessing as mp, maybe someday I will get you working
 
 
 class Analyser:
     __path = ""
     __word_count = {}
+    __character_count = {}
     def __init__(self, path=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0] + "\\resources\\txt\\book"
                                                                                              ".txt"):
         """checks the file passed actually exists"""
@@ -24,7 +25,41 @@ class Analyser:
                 for line in file:
                  self.__count_line(self.__word_count, line, raw)
             file.close()
+        self.__word_count = self.__order_dictionary(self.__word_count)
         return self.__word_count
+
+    def count_characters(self, raw = False):
+        """counts character frequency"""
+        self.count_words(raw)
+        for key in self.__word_count:
+            for character in key:
+                self.__count_char(self.__character_count, character, self.__word_count[key])
+        self.__character_count = self.__order_dictionary(self.__character_count)
+        return self.__character_count
+
+    def most_freq(self, quantity, filepath="words.csv"):
+        """produces a csv file of the most frequent words"""
+        self.count_words()
+        if quantity > len(self.__word_count):
+            raise Exception("Depth of " + str(quantity) + " is greater than the quantity of unique words")
+        else:
+            with open(filepath, "w+") as csvfile:
+                writer = csv.writer(csvfile, delimiter=",", quotechar="|", quoting=csv.QUOTE_MINIMAL)
+                counter = 0
+                for key in self.__word_count:
+                    if counter == quantity:
+                        break
+                    else:
+                        writer.writerow([key, self.__word_count[key]])
+                        counter += 1
+            csvfile.close()
+
+    def __count_char(self, char_count, char, value):
+        if char in char_count:
+            char_count[char] += 1*value
+        else:
+            char_count[char] = 1*value
+
 
     def __count_line(self, word_count, line, raw = False):
         """counts how many times a word appears in a string"""
@@ -37,17 +72,24 @@ class Analyser:
                 else:
                     word_count[word] = 1
 
-    def produce_graph(self):
-        godwillsit = False
-        if godwillsit:
-            self.count_words()
-            r = range(0, len(self.__word_count))
-            plot.figure()
-            plot.ion()
-            plot.bar(r, self.__word_count.values())
-            plot.xticks(r, self.__word_count.keys())
-            plot.tight_layout()
-            plot.show()
+    def word_graph(self):
+        """"produces a bar chart of the word frequency"""
+        self.count_words()
+        self.__produce_graph(self.__word_count)
+
+    def char_graph(self):
+        """produces a bar chart of the character frequency"""
+        self.count_characters()
+        self.__produce_graph(self.__character_count)
+
+    def __order_dictionary(self, dictionary):
+        """sorts a dictionary in descending order of the value"""
+        templist = []
+        for key in dictionary:
+            templist.append((key, dictionary[key]))
+
+        templist = sorted(templist, key=lambda x: x[1], reverse=True)
+        return dict(templist)
 
     def __format_string(self, string):
         """removes non-alphanumeric characters and makes a string lowercase"""
@@ -56,5 +98,8 @@ class Analyser:
         string = string.replace("_", "")
         return string
 
-myanalyser = Analyser()
-myanalyser.produce_graph()
+    def __produce_graph(self, dictionary):
+        """produces a graph of a dictionary"""
+        plot.bar(range(len(dictionary)), dictionary.values(), align='center')
+        plot.xticks(range(len(dictionary)), list(dictionary.keys()))
+        plot.show()
