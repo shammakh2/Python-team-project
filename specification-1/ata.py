@@ -9,6 +9,7 @@ import matplotlib
 class Analyser:
     __path = ""
     __word_count = {}
+    __character_count = {}
     def __init__(self, path=os.path.split(os.path.split(os.path.realpath(__file__))[0])[0] + "\\resources\\txt\\book"
                                                                                              ".txt"):
         """checks the file passed actually exists"""
@@ -24,9 +25,24 @@ class Analyser:
                 for line in file:
                  self.__count_line(self.__word_count, line, raw)
             file.close()
-
         self.__word_count = self.__order_dictionary(self.__word_count)
         return self.__word_count
+
+    def count_characters(self, raw = False):
+        """counts character frequency"""
+        self.count_words(raw)
+        for key in self.__word_count:
+            for character in key:
+                self.__count_char(self.__character_count, character, self.__word_count[key])
+        self.__character_count = self.__order_dictionary(self.__character_count)
+        return self.__character_count
+
+    def __count_char(self, char_count, char, value):
+        if char in char_count:
+            char_count[char] += 1*value
+        else:
+            char_count[char] = 1*value
+
 
     def __count_line(self, word_count, line, raw = False):
         """counts how many times a word appears in a string"""
@@ -44,6 +60,10 @@ class Analyser:
         self.count_words()
         self.__produce_graph(self.__word_count)
 
+    def char_graph(self):
+        """produces a bar chart of the character frequency"""
+        self.count_characters()
+        self.__produce_graph(self.__character_count)
 
     def __order_dictionary(self, dictionary):
         """sorts a dictionary in descending order of the value"""
@@ -53,7 +73,6 @@ class Analyser:
 
         templist = sorted(templist, key=lambda x: x[1], reverse=True)
         return dict(templist)
-
 
     def __format_string(self, string):
         """removes non-alphanumeric characters and makes a string lowercase"""
