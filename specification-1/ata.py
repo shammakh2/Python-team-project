@@ -2,7 +2,7 @@
 import os.path
 import matplotlib.pyplot as plot
 import re
-import matplotlib
+import csv
 #import multiprocessing as mp, maybe someday I will get you working
 
 
@@ -36,6 +36,23 @@ class Analyser:
                 self.__count_char(self.__character_count, character, self.__word_count[key])
         self.__character_count = self.__order_dictionary(self.__character_count)
         return self.__character_count
+
+    def most_freq(self, quantity, filepath="words.csv"):
+        """produces a csv file of the most frequent words"""
+        self.count_words()
+        if quantity > len(self.__word_count):
+            raise Exception("Depth of " + str(quantity) + " is greater than the quantity of unique words")
+        else:
+            with open(filepath, "w+") as csvfile:
+                writer = csv.writer(csvfile, delimiter=",", quotechar="|", quoting=csv.QUOTE_MINIMAL)
+                counter = 0
+                for key in self.__word_count:
+                    if counter == quantity:
+                        break
+                    else:
+                        writer.writerow([key, self.__word_count[key]])
+                        counter += 1
+            csvfile.close()
 
     def __count_char(self, char_count, char, value):
         if char in char_count:
