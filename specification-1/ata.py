@@ -31,10 +31,11 @@ class Analyser:
     def count_characters(self, raw = False):
         """counts character frequency"""
         self.count_words(raw)
-        for key in self.__word_count:
-            for character in key:
-                self.__count_char(self.__character_count, character, self.__word_count[key])
-        self.__character_count = self.__order_dictionary(self.__character_count)
+        if self.__character_count == {}:
+            for key in self.__word_count:
+                for character in key:
+                  self.__count_char(self.__character_count, character, self.__word_count[key])
+            self.__character_count = self.__order_dictionary(self.__character_count)
         return self.__character_count
 
     def most_freq(self, quantity, filepath="words.csv"):
@@ -53,6 +54,26 @@ class Analyser:
                         writer.writerow([key, self.__word_count[key]])
                         counter += 1
             csvfile.close()
+
+    def produce_findings(self, num_of_words=10, filepath="FINDINGS.MD"):
+        self.count_characters()
+        file = open(filepath, "w+", encoding="utf-8")
+        file.write("### Findings\n")
+        file.write("\n")
+        file.write(f"The {str(num_of_words)} most frequent words are: \n")
+        counter = 0
+        for key in self.__word_count:
+            if counter == num_of_words:
+                break
+            else:
+                file.write(f"* {key} with {str(self.__word_count[key])}\n")
+                counter += 1
+        file.write("\n")
+        file.write("The frequency of each character is: \n")
+        for key in self.__character_count:
+            file.write(f"* {key} - {str(self.__character_count[key])}\n")
+        file.close()
+
 
     def __count_char(self, char_count, char, value):
         if char in char_count:
