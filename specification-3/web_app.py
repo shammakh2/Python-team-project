@@ -1,6 +1,16 @@
 from flask import Flask
 from flask import render_template
+"""
+A brief description of what my code does and how it meets the requirement specification:
+Lines 18-68 read the README and python files into python strings, removing new line character \n and replacing it with a different newline character
+After this I defined 'routes' for each page. I inserted python variables into the HTML file.
+I created index.html which is a template for each page.
 
+My code meets requirement 1 because I installed and imported the Flask module
+My code meets requirement 2 because I initially produced a homepage that linked to other pages which each display our code.
+My code meets requirement 3 because I created a web page for each specification and presented our code on each.
+My code meets requirement 4 because I have written this brief description.
+"""
 app = Flask(__name__)
 home_message= "Hello Team 48! This is the homepage to the web app. This web app's purpose is to represent our teams work" \
               " in a web interface. You can navigate by clicking the hyperlinks at the top."
