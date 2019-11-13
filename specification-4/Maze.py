@@ -3,9 +3,9 @@ import math
 import random
 
 pygame.init()
-wide = 60
-win_x = (wide*22) + 3
-win_y = (wide*22) + 3
+wide = 50
+win_x = (wide*20) + 3
+win_y = (wide*20) + 3
 screen = pygame.display.set_mode((win_x, win_y))
 pygame.display.set_caption('Maze Generator')
 grid = []
@@ -61,38 +61,38 @@ def main ():
     for y in range(0,num_row):
         for x in range(0,num_col):
             grid.append(Cell(x,y))
-
+    for cell in grid:
+        cell.draw_cell()
     current = grid[0]
 
     while True:
-        pygame.time.Clock().tick(10)
+        pygame.time.Clock().tick(20)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
         screen.blit(background, (0,0))
-        for cell in grid:
-            cell.draw_cell()
-            next_cell = current.find_neighbor()
+        next_cell = current.find_neighbor()
         if current.visited:
             pygame.draw.rect(screen, (255, 255, 150, 100), current.loc())
         else:
             pygame.draw.rect(screen, (0, 0, 130, 100), current.loc())
         current.visited = True
         if next_cell is not None:
-            if next_cell.col - current.col == 1:
-                current.sides[1] = False
-                next_cell.sides[3] = False
-            if next_cell.col - current.col == -1:
-                current.sides[3] = False
-                next_cell.sides[1] = False
-            if next_cell.row - current.row == 1:
-                current.sides[2] = False
-                next_cell.sides[0] = False
-            if next_cell.row - current.row == -1:
-                current.sides[0] = False
-                next_cell.sides[2] = False
-            stack.append(current)
-            current = next_cell
+            if next_cell.visited == False:
+                if next_cell.col - current.col == 1:
+                    current.sides[1] = False
+                    next_cell.sides[3] = False
+                if next_cell.col - current.col == -1:
+                    current.sides[3] = False
+                    next_cell.sides[1] = False
+                if next_cell.row - current.row == 1:
+                    current.sides[2] = False
+                    next_cell.sides[0] = False
+                if next_cell.row - current.row == -1:
+                    current.sides[0] = False
+                    next_cell.sides[2] = False
+                stack.append(current)
+                current = next_cell
         else:
             if len(stack) > 0:
                 current = stack.pop()
