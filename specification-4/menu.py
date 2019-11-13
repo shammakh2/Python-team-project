@@ -15,22 +15,6 @@ menuScreen = pygame.display.set_mode((screenWidth, screenHeight))  # Sets the di
 menuScreen.fill(screenColor)  # Fills display with passed color variable
 pygame.display.update()  # Updates the PyGame display to remain up-to-date
 
-class Title:
-    """Static Variables for the font of text"""
-    fontColor = (0, 0, 0)
-    font = pygame.font.SysFont('Roboto', 60)
-
-    def __init__(self, content, surface,):
-        """Dynamic text variable for each instance"""
-        self.content = content
-        self.surface = surface
-
-    def render(self):
-        """Function to render text and blit it onto the display."""
-        textRender = self.font.render(self.content, False, self.fontColor)
-        menuScreen.blit(textRender, self.surface)
-        pygame.display.update()
-
 
 # Text Class Template
 class Text:
@@ -50,20 +34,22 @@ class Text:
         pygame.display.update()
 
 
-class Title(Text):
+# Child Classes of Text class
+class Title(Text):  # Child class for a Title instances.
     font = pygame.font.SysFont('Roboto', 60)
 
     def __init__(self, content, surface):
         super().__init__(content, surface)
 
 
-class Blurb(Text):
+class Blurb(Text):  # Child class for Blurb/Description Instances.
     font = pygame.font.SysFont('Roboto', 28)
 
     def __init__(self, content, surface):
         super().__init__(content, surface)
 
-class Label(Text):
+
+class Label(Text):  # Child class for Label Instances.
     font = pygame.font.SysFont('Roboto', 48)
 
     def __init__(self, content, surface):
@@ -115,6 +101,7 @@ descriptionl3.render()
 
 # Updates PyGame display at the end to keep things up-to-date.
 pygame.display.update()
+myrect = pygame.draw.rect(menuScreen, Button.color, (100, 100, 100, 100))
 
 # Loop to close the game
 while True:
@@ -124,4 +111,6 @@ while True:
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
+            if myrect.collidepoint(pos):
+                print("Pew!")
             print(pos)
