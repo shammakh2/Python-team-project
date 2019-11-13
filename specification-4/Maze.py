@@ -57,12 +57,12 @@ def main ():
     num_row = math.floor(win_y/wide)
     num_col = math.floor(win_x/wide)
     stack = []
-
+    loop_de_loop = []
     for y in range(0,num_row):
         for x in range(0,num_col):
             grid.append(Cell(x,y))
     for cell in grid:
-        cell.draw_cell()
+        loop_de_loop.append(cell.draw_cell)
     current = grid[0]
 
     while True:
@@ -72,10 +72,12 @@ def main ():
                 return
         screen.blit(background, (0,0))
         next_cell = current.find_neighbor()
+        for x in loop_de_loop:
+            x()
         if current.visited:
             pygame.draw.rect(screen, (255, 255, 150, 100), current.loc())
         else:
-            pygame.draw.rect(screen, (0, 0, 130, 100), current.loc())
+            pygame.draw.rect(screen, (130, 130, 255, 100), current.loc())
         current.visited = True
         if next_cell is not None:
             if next_cell.visited == False:
@@ -96,9 +98,7 @@ def main ():
         else:
             if len(stack) > 0:
                 current = stack.pop()
-
-
-        pygame.display.flip()
+        pygame.display.update()
 
 if __name__ == '__main__':
     main()
