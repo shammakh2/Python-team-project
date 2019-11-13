@@ -36,13 +36,12 @@ class Title:
 class Text:
     """Static Variables for the font of text"""
     fontColor = (0, 0, 0)
-    font = pygame.font.SysFont('Roboto', 36)
+    font = pygame.font.SysFont('Roboto', 10)
 
-    def __init__(self, content, surface,):
+    def __init__(self, content, surface):
         """Dynamic text variable for each instance"""
         self.content = content
         self.surface = surface
-        Title.__init__(self, content, surface)
 
     def render(self):
         """Function to render text and blit it onto the display."""
@@ -52,14 +51,23 @@ class Text:
 
 
 class Title(Text):
-    font = pygame.font.SysFont('Roboto', 10)
+    font = pygame.font.SysFont('Roboto', 60)
+
+    def __init__(self, content, surface):
+        super().__init__(content, surface)
 
 
 class Blurb(Text):
-    pass
+    font = pygame.font.SysFont('Roboto', 28)
+
+    def __init__(self, content, surface):
+        super().__init__(content, surface)
 
 class Label(Text):
-    pass
+    font = pygame.font.SysFont('Roboto', 48)
+
+    def __init__(self, content, surface):
+        super().__init__(content, surface)
 
 
 # Button Class template
@@ -91,11 +99,11 @@ tttbutton.drawRec()
 
 # Defining instances of text.
 title = Title("Specification 4", (400, 100))
-mazebuttontext = Text("Maze Generator.", (200, 300))
-tttbuttontext = Text("Tic-Tac-Toe.", (750, 300))
-descriptionl1 = Text("We have used PyGame to demonstrate a variation of skills.", (210, 550))
-descriptionl2 = Text("The Maze button will start an instance of the maze game.", (215, 600))
-descriptionl3 = Text("The Tic-Tac-Toe button will start an instance of the game.", (215, 650))
+mazebuttontext = Label("Maze Generator.", (200, 300))
+tttbuttontext = Label("Tic-Tac-Toe.", (750, 300))
+descriptionl1 = Blurb("We have used PyGame to demonstrate a variation of skills.", (210, 550))
+descriptionl2 = Blurb("The Maze button will start an instance of the maze game.", (215, 600))
+descriptionl3 = Blurb("The Tic-Tac-Toe button will start an instance of the game.", (215, 650))
 
 # Calls upon the render method to render instances of text.
 title.render()
