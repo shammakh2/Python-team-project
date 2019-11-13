@@ -15,6 +15,19 @@ menuScreen = pygame.display.set_mode((screenWidth, screenHeight))  # Sets the di
 menuScreen.fill(screenColor)  # Fills display with passed color variable
 pygame.display.update()  # Updates the PyGame display to remain up-to-date
 
+# Defining Rectangle variables
+rectWidth = 400
+rectHeight = 225
+rectColor = (192, 192, 192)
+surface = menuScreen
+
+# Drawing rectangles
+mazebutton = pygame.draw.rect(surface, rectColor, (150, 250, rectWidth, rectHeight))
+tttbutton = pygame.draw.rect(surface, rectColor, (700, 250, rectWidth, rectHeight))
+
+# Updates PyGame display
+pygame.display.update()
+
 
 # Text Class Template
 class Text:
@@ -56,33 +69,6 @@ class Label(Text):  # Child class for Label Instances.
         super().__init__(content, surface)
 
 
-# Button Class template
-class Button:
-    """Static button variables for all buttons"""
-    color = (192, 192, 192)
-    height = 225
-    width = 400
-    surface = menuScreen
-
-    def __init__(self, xPosition, yPosition):
-        """Constructor with dynamic variables."""
-        self.xPosition = xPosition
-        self.yPosition = yPosition
-
-    def drawRec(self):
-        """Draws the rectangle and updates surface display."""
-        pygame.draw.rect(menuScreen, self.color, (self.xPosition, self.yPosition, self.width, self.height))
-        pygame.display.update()
-
-
-# Creates instances of buttons and sets their x, y positions
-mazebutton = Button(150, 250)
-tttbutton = Button(700, 250)
-
-# Calls upon the drawRec method to draw the instances of buttons.
-mazebutton.drawRec()
-tttbutton.drawRec()
-
 # Defining instances of text.
 title = Title("Specification 4", (400, 100))
 mazebuttontext = Label("Maze Generator.", (200, 300))
@@ -101,7 +87,6 @@ descriptionl3.render()
 
 # Updates PyGame display at the end to keep things up-to-date.
 pygame.display.update()
-myrect = pygame.draw.rect(menuScreen, Button.color, (100, 100, 100, 100))
 
 # Loop to close the game
 while True:
@@ -111,6 +96,7 @@ while True:
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
-            if myrect.collidepoint(pos):
+            if mazebutton.collidepoint(pos):
                 print("Pew!")
-            print(pos)
+            else:
+                print(pos)
