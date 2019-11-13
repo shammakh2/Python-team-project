@@ -98,5 +98,5 @@ while True:
             pos = pygame.mouse.get_pos()
             if mazebutton.collidepoint(pos):
                 print("Pew!")
-            else:
-                print(pos)
+            elif tttbutton.collidepoint(pos):
+                print("Pow!")
