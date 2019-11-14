@@ -24,8 +24,6 @@ surface = menuScreen
 
 # Drawing rectangles
 mazebutton = pygame.draw.rect(surface, rectColor, (300, 250, rectWidth, rectHeight))
-#tttbutton = pygame.draw.rect(surface, rectColor, (700, 250, rectWidth, rectHeight))
-
 
 # Updates PyGame display
 pygame.display.update()
@@ -74,18 +72,14 @@ class Label(Text):  # Child class for Label Instances.
 # Defining instances of text.
 title = Title("Specification 4", (280, 100))
 mazebuttontext = Label("Maze Generator", (370, 330))
-#tttbuttontext = Label("Tic-Tac-Toe.", (750, 300))
 descriptionl1 = Blurb("We have used PyGame to demonstrate a new library.", (250, 550))
 descriptionl2 = Blurb("Please click the 'Maze Generator' button to begin.", (260, 600))
-#descriptionl3 = Blurb("The Tic-Tac-Toe button will start an instance of the game.", (215, 650))
 
 # Calls upon the render method to render instances of text.
 title.render()
 mazebuttontext.render()
-#tttbuttontext.render()
 descriptionl1.render()
 descriptionl2.render()
-#descriptionl3.render()
 
 # Updates PyGame display at the end to keep things up-to-date.
 pygame.display.update()
@@ -100,8 +94,6 @@ while True:
             pos = pygame.mouse.get_pos()
             if mazebutton.collidepoint(pos):
                 print("Pew!")# start()
-            elif tttbutton.collidepoint(pos):
-                print("Pow!")
         elif event.type == pygame.MOUSEMOTION:
             if mazebutton.collidepoint(pygame.mouse.get_pos()):
                 print("Test")
