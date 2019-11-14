@@ -3,7 +3,7 @@ import random
 
 pygame.init()
 
-wide = 40
+wide = 80
 rows = 10
 cols = 10
 win_x = (wide*cols) + 3
@@ -111,6 +111,7 @@ class mena:
         self.pos = -50
         self.alpha = 20
         self.big_pos = 0
+        self.pause = False
 
 
 def main ():
@@ -134,11 +135,16 @@ def main ():
         surface2.set_alpha(200)
         menu_surf = pygame.Surface((40,40))
         menu_surf.set_alpha(open.alpha)
+        menu_settings_surf = pygame.Surface((40,40))
+        menu_pause_surf = pygame.Surface((40, 40))
+        menu_quit_surf = pygame.Surface((40, 40))
         text = font.render(u'\u2630', True, (255,255,255))
-        pause =  font.render('▶', True, (255,255,255))
+        big_exit = font.render('Exit', True, (0, 0, 0))
+        pause_text =  font.render('▶', True, (255,255,255))
         settings = adjust_font.render('⚙', True, (255,255,255))
         power = readjust_font.render('⏻', True, (255,255,255))
         big_menu = pygame.Surface((win_x + 50,win_y + 50))
+        button_on_liddle_menu = pygame.Surface(big_menu.get_size(), pygame.SRCALPHA)
         big_menu.fill((255,255,255))
         big_menu.set_alpha(155)
 
@@ -147,6 +153,8 @@ def main ():
                 open.alpha += 30
             if ms_pres[0] == 1:
                 open.open = True
+            if open.open == False and open.pos > -50:
+                open.pos -= 10
         elif not 0 < mouse[0] <= 50 or not 0 < mouse[1] < 120:
             if open.alpha > 20:
                 open.alpha -= 30
@@ -157,24 +165,51 @@ def main ():
             open.open_ready = True
         if open.pos < -10:
             open.open_ready = False
-        if open.open_ready == True and 0 < mouse[0] <= 50 and 0 < mouse[1] < 120:
+        if open.open_ready == True and 0 < mouse[0] <= 40 and 0 < mouse[1] < 40:
+            pygame.draw.rect(menu_pause_surf, (128,128,255), pygame.Rect(0, 0, 40, 40))
+            if ms_pres[0] == 1:
+                open.open = False
+                if open.pause == False:
+                    open.pause = True
+                elif open.pause == True:
+                    open.pause = False
+        if open.open_ready == True and 0 < mouse[0] <= 40 and 40 < mouse[1] < 80:
+            pygame.draw.rect(menu_settings_surf, (128,128,255), pygame.Rect(0, 0, 40, 40))
             if ms_pres[0] == 1:
                 open.big_open = True
+        if open.open_ready == True and 0 < mouse[0] <= 40 and 80 < mouse[1] < 120:
+            pygame.draw.rect(menu_quit_surf, (255, 50, 50), pygame.Rect(0, 0, 40, 40))
+            if ms_pres[0] == 1:
+                pygame.quit()
 
         if open.open == True and open.pos < -10:
             open.pos += 10
         if open.big_open == True and open.big_pos < win_y:
-            open.big_pos += 40
+            open.big_pos += 50
+        elif open.big_open == False and open.big_pos > win_y*-1 -50:
+            open.big_pos -= 50
 
+        if open.big_open == True and big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40 < mouse[0] <= big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40 + 80 and big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25 < mouse[1] < big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25 + 30:
+            if ms_pres[0] == 1:
+                open.big_open = False
         pygame.draw.rect(surface2, (50, 50, 50), pygame.Rect(0, 0, 50, 120))
-        pygame.draw.rect(menu_surf, (200, 50, 50), pygame.Rect(0, 0, 40, 40))
-        surface2.blit(pause, (22, 11))
+        pygame.draw.rect(menu_surf, (130, 130, 130), pygame.Rect(0, 0, 40, 40))
+        surface2.blit(menu_pause_surf, (10, 0))
+        surface2.blit(pause_text, (22, 11))
+        surface2.blit(menu_settings_surf, (10, 40))
         surface2.blit(settings, (19, 50))
+        surface2.blit(menu_quit_surf, (10, 80))
         surface2.blit(power, (22, 90))
         screen.blit(surface2, (open.pos,0))
         menu_surf.blit(text, (10,8))
         screen.blit(menu_surf, (50 + open.pos, 40))
         screen.blit(big_menu, (0, (win_y*-1 -50 + open.big_pos)))
+
+        pygame.draw.rect(button_on_liddle_menu, (200, 50, 50), ((big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40), (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) , 80, 30))
+        button_on_liddle_menu.blit(big_exit, (( 10 + big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.40),
+                                              (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25), 80, 30))
+        screen.blit(button_on_liddle_menu, (0, (win_y * -1 - 50 + open.big_pos)))
+
 
     for y in range(0,rows):
         for x in range(0,cols):
@@ -222,26 +257,28 @@ def main ():
             else:
                 pygame.draw.rect(screen, (130, 130, 255, 100), current.char_size())
             current.visited = True
-            if next_cell is not None:
-                if not next_cell.visited:
-                    if next_cell.col - current.col == 1:
-                        current.sides[1] = False
-                        next_cell.sides[3] = False
-                    if next_cell.col - current.col == -1:
-                        current.sides[3] = False
-                        next_cell.sides[1] = False
-                    if next_cell.row - current.row == 1:
-                        current.sides[2] = False
-                        next_cell.sides[0] = False
-                    if next_cell.row - current.row == -1:
-                        current.sides[0] = False
-                        next_cell.sides[2] = False
-                    stack.append(current)
-                    current = next_cell
-                    visited += 1
-            else:
-                if len(stack) > 0:
-                    current = stack.pop()
+            if open.pause == False:
+                if next_cell is not None:
+                    if not next_cell.visited:
+                        if next_cell.col - current.col == 1:
+                            current.sides[1] = False
+                            next_cell.sides[3] = False
+                        if next_cell.col - current.col == -1:
+                            current.sides[3] = False
+                            next_cell.sides[1] = False
+                        if next_cell.row - current.row == 1:
+                            current.sides[2] = False
+                            next_cell.sides[0] = False
+                        if next_cell.row - current.row == -1:
+                            current.sides[0] = False
+                            next_cell.sides[2] = False
+                        stack.append(current)
+                        current = next_cell
+                        visited += 1
+                else:
+                    if len(stack) > 0:
+                        current = stack.pop()
+
             if visited == rows*cols and current == grid[0]:
                 game_loading = False
                 game_start = True
