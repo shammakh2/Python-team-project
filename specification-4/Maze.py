@@ -106,9 +106,6 @@ class player:
     
 
 
-
-
-
 def main ():
     background = pygame.Surface(screen.get_size())
     background.fill((0,0,0))
@@ -118,6 +115,17 @@ def main ():
     stack = []
     visited = 1
     loop_de_loop = []
+
+    def menu():
+        mouse = pygame.mouse.get_pos()
+        surface2 = pygame.Surface((50,50))
+        if 0 < mouse[0] <= 50 and 50 < mouse[1] < 100 :
+            surface2.set_alpha(155)
+        elif not 0 < mouse[0] <= 50 or not 50 < mouse[1] < 100 :
+            surface2.set_alpha(20)
+        pygame.draw.rect(surface2, (200, 50, 50), pygame.Rect(0, 0, 50, 50))
+        screen.blit(surface2, (0,50))
+
     for y in range(0,rows):
         for x in range(0,cols):
             grid.append(Cell(x,y))
@@ -189,7 +197,7 @@ def main ():
                 game_start = True
         if game_loading is False and game_start is True:
             pygame.draw.rect(screen, (77, 255, 136, 100), (current.x, current.y, wide, wide ))
-
+        menu()
         pygame.display.update()
 
 if __name__ == '__main__':
