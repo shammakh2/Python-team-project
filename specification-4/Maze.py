@@ -2,15 +2,10 @@ import pygame
 import random
 
 pygame.init()
-<<<<<<< HEAD
-wide = 50
+
+wide = 40
 rows = 10
 cols = 10
-=======
-wide = 70
-rows = 15
-cols = 15
->>>>>>> 6cef16078994e2b53516858ea3fdace843a1f6c5
 win_x = (wide*cols) + 3
 win_y = (wide*rows) + 3
 screen = pygame.display.set_mode((win_x, win_y))
@@ -68,40 +63,6 @@ class Cell:
 class player:
     def __init__(self, current):
         self.__on_cell = current
-<<<<<<< HEAD
-
-    def __str__(self):
-        return f"This is on {self.__on_cell.col} and {self.__on_cell.row}"
-
-    def loc_set(self, current):
-        self.__on_cell = current
-
-    def loc_get(self):
-        return self.__on_cell
-
-    def movement_up(self):
-        for x in self.__on_cell.neighbor:
-            if x.col == self.__on_cell.col and x.row == self.__on_cell.row - 1:
-                if self.__on_cell.sides[0] is False:
-                    self.__on_cell = x
-
-
-    def movement_down(self):
-        for x in self.__on_cell.neighbor:
-            if x.col == self.__on_cell.col and x.row == self.__on_cell.row + 1:
-                if self.__on_cell.sides[2] is False:
-                    self.__on_cell = x
-                    print(f"x: {self.__on_cell.x}  y: {self.__on_cell.y}")
-                    print('down')
-
-
-
-    def movement_left(self):
-        for x in self.__on_cell.neighbor:
-            if x.row == self.__on_cell.row and x.col == self.__on_cell.col - 1:
-                if self.__on_cell.sides[3] is False:
-                    self.__on_cell = x
-=======
 
     def __str__(self):
         return f"This is on {self.__on_cell.col} and {self.__on_cell.row}"
@@ -135,7 +96,6 @@ class player:
                 if self.__on_cell.sides[3] is False:
                     self.__on_cell = x
 
-
     def movement_right(self):
         for x in self.__on_cell.neighbor:
             if x.row == self.__on_cell.row and x.col == self.__on_cell.col + 1:
@@ -143,19 +103,14 @@ class player:
                     self.__on_cell = x
                     print('right')
 
-
-
-
-
-
-    def movement_right(self):
-        for x in self.__on_cell.neighbor:
-            if x.row == self.__on_cell.row and x.col == self.__on_cell.col + 1:
-                if self.__on_cell.sides[1] is False:
-                    self.__on_cell = x
-                    print('right')
-
-    
+class mena:
+    def __init__(self):
+        self.open = False
+        self.open_ready = False
+        self.big_open = False
+        self.pos = -50
+        self.alpha = 20
+        self.big_pos = 0
 
 
 def main ():
@@ -166,18 +121,60 @@ def main ():
     press_time = 0
     stack = []
     visited = 1
-    menu = pygame.image.load('wito.jpg')
     loop_de_loop = []
+    open = mena()
+    font = pygame.font.Font('unifont.ttf', 20)
+    adjust_font = pygame.font.Font('unifont.ttf', 17)
+    readjust_font = pygame.font.Font('unifont.ttf', 12)
 
     def menu():
         mouse = pygame.mouse.get_pos()
-        surface2 = pygame.Surface((50,50))
-        if 0 < mouse[0] <= 50 and 50 < mouse[1] < 100 :
-            surface2.set_alpha(155)
-        elif not 0 < mouse[0] <= 50 or not 50 < mouse[1] < 100 :
-            surface2.set_alpha(20)
-        pygame.draw.rect(surface2, (200, 50, 50), pygame.Rect(0, 0, 50, 50))
-        screen.blit(surface2, (0,50))
+        ms_pres = pygame.mouse.get_pressed()
+        surface2 = pygame.Surface((50,120))
+        surface2.set_alpha(200)
+        menu_surf = pygame.Surface((40,40))
+        menu_surf.set_alpha(open.alpha)
+        text = font.render(u'\u2630', True, (255,255,255))
+        pause =  font.render('▶', True, (255,255,255))
+        settings = adjust_font.render('⚙', True, (255,255,255))
+        power = readjust_font.render('⏻', True, (255,255,255))
+        big_menu = pygame.Surface((win_x + 50,win_y + 50))
+        big_menu.fill((255,255,255))
+        big_menu.set_alpha(155)
+
+        if 0 < mouse[0] <= 50 and 0 < mouse[1] < 120:
+            if open.alpha < 155:
+                open.alpha += 30
+            if ms_pres[0] == 1:
+                open.open = True
+        elif not 0 < mouse[0] <= 50 or not 0 < mouse[1] < 120:
+            if open.alpha > 20:
+                open.alpha -= 30
+            open.open = False
+            if open.open == False and open.pos > -50:
+                open.pos -= 10
+        if open.pos >= -10:
+            open.open_ready = True
+        if open.pos < -10:
+            open.open_ready = False
+        if open.open_ready == True and 0 < mouse[0] <= 50 and 0 < mouse[1] < 120:
+            if ms_pres[0] == 1:
+                open.big_open = True
+
+        if open.open == True and open.pos < -10:
+            open.pos += 10
+        if open.big_open == True and open.big_pos < win_y:
+            open.big_pos += 40
+
+        pygame.draw.rect(surface2, (50, 50, 50), pygame.Rect(0, 0, 50, 120))
+        pygame.draw.rect(menu_surf, (200, 50, 50), pygame.Rect(0, 0, 40, 40))
+        surface2.blit(pause, (22, 11))
+        surface2.blit(settings, (19, 50))
+        surface2.blit(power, (22, 90))
+        screen.blit(surface2, (open.pos,0))
+        menu_surf.blit(text, (10,8))
+        screen.blit(menu_surf, (50 + open.pos, 40))
+        screen.blit(big_menu, (0, (win_y*-1 -50 + open.big_pos)))
 
     for y in range(0,rows):
         for x in range(0,cols):
@@ -187,9 +184,9 @@ def main ():
         loop_de_loop.append(cell.draw_cell)
     current = grid[0]
     player_is_born_in_this_foreign_land = player(current)
-    pygame.key.set_repeat(5)
+    pygame.key.set_repeat(50)
     while True:
-        pygame.time.Clock().tick(15)
+        pygame.time.Clock().tick(20)
         if press_time > 0:
             press_time += 1
         if press_time > 5:
@@ -251,10 +248,6 @@ def main ():
         if game_loading is False and game_start is True:
             pygame.draw.rect(screen, (77, 255, 136, 100), (current.x, current.y, wide, wide ))
         menu()
-
-        # sizo = pygame.transform.scale(menu, (win_x, win_y))
-        #
-        # screen.blit(sizo, (0,0))
 
         pygame.display.update()
 
