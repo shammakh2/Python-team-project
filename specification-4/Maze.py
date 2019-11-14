@@ -2,9 +2,15 @@ import pygame
 import random
 
 pygame.init()
+<<<<<<< HEAD
 wide = 50
 rows = 10
 cols = 10
+=======
+wide = 70
+rows = 15
+cols = 15
+>>>>>>> 6cef16078994e2b53516858ea3fdace843a1f6c5
 win_x = (wide*cols) + 3
 win_y = (wide*rows) + 3
 screen = pygame.display.set_mode((win_x, win_y))
@@ -62,6 +68,40 @@ class Cell:
 class player:
     def __init__(self, current):
         self.__on_cell = current
+<<<<<<< HEAD
+
+    def __str__(self):
+        return f"This is on {self.__on_cell.col} and {self.__on_cell.row}"
+
+    def loc_set(self, current):
+        self.__on_cell = current
+
+    def loc_get(self):
+        return self.__on_cell
+
+    def movement_up(self):
+        for x in self.__on_cell.neighbor:
+            if x.col == self.__on_cell.col and x.row == self.__on_cell.row - 1:
+                if self.__on_cell.sides[0] is False:
+                    self.__on_cell = x
+
+
+    def movement_down(self):
+        for x in self.__on_cell.neighbor:
+            if x.col == self.__on_cell.col and x.row == self.__on_cell.row + 1:
+                if self.__on_cell.sides[2] is False:
+                    self.__on_cell = x
+                    print(f"x: {self.__on_cell.x}  y: {self.__on_cell.y}")
+                    print('down')
+
+
+
+    def movement_left(self):
+        for x in self.__on_cell.neighbor:
+            if x.row == self.__on_cell.row and x.col == self.__on_cell.col - 1:
+                if self.__on_cell.sides[3] is False:
+                    self.__on_cell = x
+=======
 
     def __str__(self):
         return f"This is on {self.__on_cell.col} and {self.__on_cell.row}"
@@ -103,6 +143,18 @@ class player:
                     self.__on_cell = x
                     print('right')
 
+
+
+
+
+
+    def movement_right(self):
+        for x in self.__on_cell.neighbor:
+            if x.row == self.__on_cell.row and x.col == self.__on_cell.col + 1:
+                if self.__on_cell.sides[1] is False:
+                    self.__on_cell = x
+                    print('right')
+
     
 
 
@@ -114,6 +166,7 @@ def main ():
     press_time = 0
     stack = []
     visited = 1
+    menu = pygame.image.load('wito.jpg')
     loop_de_loop = []
 
     def menu():
@@ -198,6 +251,11 @@ def main ():
         if game_loading is False and game_start is True:
             pygame.draw.rect(screen, (77, 255, 136, 100), (current.x, current.y, wide, wide ))
         menu()
+
+        # sizo = pygame.transform.scale(menu, (win_x, win_y))
+        #
+        # screen.blit(sizo, (0,0))
+
         pygame.display.update()
 
 if __name__ == '__main__':
