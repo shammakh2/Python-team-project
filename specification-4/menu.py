@@ -10,7 +10,7 @@ running = True
 # Screen GUI
 screenHeight = 720
 screenWidth = 1280
-screenColor = (255, 229, 204)
+screenColor = (192, 192, 192)
 menuScreen = pygame.display.set_mode((screenWidth, screenHeight))  # Sets the display to given variables
 menuScreen.fill(screenColor)  # Fills display with passed color variable
 pygame.display.update()  # Updates the PyGame display to remain up-to-date
@@ -18,12 +18,13 @@ pygame.display.update()  # Updates the PyGame display to remain up-to-date
 # Defining Rectangle variables
 rectWidth = 400
 rectHeight = 225
-rectColor = (192, 192, 192)
+rectColor = (255, 255, 255)
 surface = menuScreen
 
 # Drawing rectangles
 mazebutton = pygame.draw.rect(surface, rectColor, (150, 250, rectWidth, rectHeight))
 tttbutton = pygame.draw.rect(surface, rectColor, (700, 250, rectWidth, rectHeight))
+
 
 # Updates PyGame display
 pygame.display.update()
@@ -100,3 +101,11 @@ while True:
                 print("Pew!")
             elif tttbutton.collidepoint(pos):
                 print("Pow!")
+        elif event.type == pygame.MOUSEMOTION:
+            if mazebutton.collidepoint(pygame.mouse.get_pos()):
+                print("Test") 
+            else:
+                pass
+        else:
+            pass
+
