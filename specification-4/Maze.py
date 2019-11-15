@@ -152,11 +152,7 @@ def main ():
     adjust_font = pygame.font.Font('unifont.ttf', 17)
     readjust_font = pygame.font.Font('unifont.ttf', 12)
     big_menu = pygame.Surface((win_x + 60, win_y + 60))
-    res_x = settin(big_menu, 130, 250, 80, 30, 'Resolution x')
-    res_y = settin(big_menu, 130, 350, 80, 30, 'Resolution y')
-    col_create = settin(big_menu, 300, 300, 80, 30, 'Column Number')
-    row_create = settin(big_menu, 300, 400, 80, 30, 'Row Number')
-    cell_sizl = settin(big_menu, 130, 450, 80, 30, 'Cell width')
+    setting_list = [settin(big_menu, 130, 250, 80, 30, 'Resolution x'), settin(big_menu, 130, 350, 80, 30, 'Resolution y'), settin(big_menu, 300, 300, 80, 30, 'Column Number'), settin(big_menu, 300, 400, 80, 30, 'Row Number'), settin(big_menu, 130, 450, 80, 30, 'Cell width')]
 
     def menu(mous, mousp):
         mouse = pygame.mouse.get_pos()
@@ -168,7 +164,7 @@ def main ():
         menu_pause_surf = pygame.Surface((40, 40))
         menu_quit_surf = pygame.Surface((40, 40))
         text = font.render(u'\u2630', True, (255,255,255))
-        big_exit = font.render('Exit', True, (0, 0, 0))
+        big_exit = font.render('Close', True, (0, 0, 0))
         pause_text = font.render('▶', True, (255,255,255))
         settings = adjust_font.render('⚙', True, (255,255,255))
         power = readjust_font.render('⏻', True, (255,255,255))
@@ -192,16 +188,16 @@ def main ():
         screen.blit(surface2, (open.pos,0))
         menu_surf.blit(text, (10,8))
         screen.blit(menu_surf, (50 + open.pos, 40))
-        res_x.render()
-        big_menu.blit(res_x.lable_rend(), (20, 255))
-        res_y.render()
-        big_menu.blit(res_y.lable_rend(), (20, 355))
-        col_create.render()
-        big_menu.blit(col_create.lable_rend(), (180, 305))
-        row_create.render()
-        big_menu.blit(row_create.lable_rend(), (200, 405))
-        cell_sizl.render()
-        big_menu.blit(cell_sizl.lable_rend(), (20, 455))
+        setting_list[0].render()
+        big_menu.blit(setting_list[0].lable_rend(), (20, 255))
+        setting_list[1].render()
+        big_menu.blit(setting_list[1].lable_rend(), (20, 355))
+        setting_list[2].render()
+        big_menu.blit(setting_list[2].lable_rend(), (180, 305))
+        setting_list[3].render()
+        big_menu.blit(setting_list[3].lable_rend(), (200, 405))
+        setting_list[4].render()
+        big_menu.blit(setting_list[4].lable_rend(), (20, 455))
         screen.blit(big_menu, (0, (win_y*-1 -50 + open.big_pos)))
 
         pygame.draw.rect(button_on_liddle_menu, (200, 50, 50), ((big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (win_x - (cols * wide))/2, (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (win_y - (rows * wide))/2 , 80, 30))
@@ -252,35 +248,37 @@ def main ():
                     open.big_open = False
 
                 if open.big_open == True and 130 < mous[0] <= 210 and (250 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 280 + (win_y*-1 -50 + open.big_pos):
-                    res_x.active = True
-                    res_y.active = False
-                    col_create.active = False
-                    row_create.active = False
-                    cell_sizl.active = False
+                    for x in setting_list:
+                        if x == setting_list[0]:
+                            x.active = True
+                        else:
+                            x.active = False
                 if open.big_open == True and 130 < mous[0] <= 210 and (350 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 380 + (win_y*-1 -50 + open.big_pos):
-                    res_y.active = True
-                    res_x.active = False
-                    col_create.active = False
-                    row_create.active = False
-                    cell_sizl.active = False
+                    for x in setting_list:
+                        if x == setting_list[1]:
+                            x.active = True
+                        else:
+                            x.active = False
                 if open.big_open == True and 300 < mous[0] <= 380 and (300 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 330 + (win_y*-1 -50 + open.big_pos):
-                    col_create.active = True
-                    res_x.active = False
-                    res_y.active = False
-                    row_create.active = False
-                    cell_sizl.active = False
+                    for x in setting_list:
+                        if x == setting_list[2]:
+                            x.active = True
+                        else:
+                            x.active = False
                 if open.big_open == True and 300 < mous[0] <= 380 and (400 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 430 + (win_y*-1 -50 + open.big_pos):
-                    row_create.active = True
-                    res_x.active = False
-                    res_y.active = False
-                    col_create.active = False
-                    cell_sizl.active = False
+                    for x in setting_list:
+                        if x == setting_list[3]:
+                            x.active = True
+                        else:
+                            x.active = False
                 if open.big_open == True and 130 < mous[0] <= 210 and (450 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 480 + (win_y*-1 -50 + open.big_pos):
-                    cell_sizl.active = True
-                    res_x.active = False
-                    res_y.active = False
-                    col_create.active = False
-                    row_create.active = False
+                    for x in setting_list:
+                        if x == setting_list[4]:
+                            x.active = True
+                        else:
+                            x.active = False
+
+                for 
 
 
 
