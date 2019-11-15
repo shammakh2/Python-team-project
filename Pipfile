@@ -11,6 +11,7 @@ flask = "*"
 matplotlib = "*"
 pillow = "*"
 pygame = "*"
+pywin32 = "*"
 
 [requires]
 python_version = "3.7"

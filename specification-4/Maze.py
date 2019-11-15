@@ -1,16 +1,21 @@
 import pygame
 import random
+from win32api import GetSystemMetrics
 
-wide = 40
-rows = 15
-cols = 15
-win_x = 700
-win_y = 700
-screen = pygame.display.set_mode((win_x, win_y))
-pygame.display.set_caption('Maze Game and Generator')
-grid = []
+class Dad_of_All:
+    def __init__(self):
+        self.wide = 40
+        self.rows = 15
+        self.cols = 15
+        self.win_x = 700
+        self.win_y = 700
+        self.grid = []
 
-pygame.init()
+    def screen_init(self):
+        self.screen = pygame.display.set_mode((self.win_x, self.win_y))
+
+live_now = Dad_of_All()
+live_now.screen_init()
 
 class Cell:
     def __init__(self, col, row):
@@ -18,8 +23,8 @@ class Cell:
         self.row = row
         self.sides = [True, True, True, True]
         self.visited = False
-        self.x = self.col * wide + ((win_x) - (cols * wide))/2
-        self.y = self.row * wide + ((win_y) - (rows * wide))/2
+        self.x = self.col * live_now.wide + ((live_now.win_x) - (live_now.cols * live_now.wide))/2
+        self.y = self.row * live_now.wide + ((live_now.win_y) - (live_now.rows * live_now.wide))/2
         self.neighbor = []
 
     def __str__(self):
@@ -28,26 +33,26 @@ class Cell:
     def draw_cell(self):
 
         if self.visited == True:
-            pygame.draw.rect(screen, (70, 70, 70, 255), self.loc())
+            pygame.draw.rect(live_now.screen, (70, 70, 70, 255), self.loc())
         if self.sides[0]:
-            pygame.draw.line(screen, (128,128,255), (self.x,self.y), (self.x+wide,self.y), 3) #Top
+            pygame.draw.line(live_now.screen, (128,128,255), (self.x,self.y), (self.x+live_now.wide,self.y), 3) #Top
         if self.sides[1]:
-            pygame.draw.line(screen, (128,128,255), (self.x + wide, self.y), (self.x + wide , self.y+wide), 3) #Right
+            pygame.draw.line(live_now.screen, (128,128,255), (self.x + live_now.wide, self.y), (self.x + live_now.wide , self.y+live_now.wide), 3) #Right
         if self.sides[2]:
-            pygame.draw.line(screen, (128,128,255), (self.x, self.y+wide), (self.x + wide, self.y + wide), 3) #Bottom
+            pygame.draw.line(live_now.screen, (128,128,255), (self.x, self.y+live_now.wide), (self.x + live_now.wide, self.y + live_now.wide), 3) #Bottom
         if self.sides[3]:
-            pygame.draw.line(screen, (128,128,255), (self.x, self.y), (self.x, self.y + wide), 3) #Left
+            pygame.draw.line(live_now.screen, (128,128,255), (self.x, self.y), (self.x, self.y + live_now.wide), 3) #Left
 
 
     def loc(self):
-        return self.x, self.y, wide, wide
+        return self.x, self.y, live_now.wide, live_now.wide
     def char_size(self):
-        return self.x + 2 , self.y + 2, wide - 3, wide - 3
+        return self.x + 2 , self.y + 2, live_now.wide - 3, live_now.wide - 3
 
     def find_neighbor(self):
         self.neighbor = []
-        for all in grid:
-            if 0 <= all.x <= win_x and 0 <= all.y <= win_y:
+        for all in live_now.grid:
+            if 0 <= all.x <= live_now.win_x and 0 <= all.y <= live_now.win_y:
                 if (all.col == self.col + 1 and  all.row == self.row) or (all.col == self.col - 1 and all.row == self.row) or (all.col == self.col and  all.row == self.row + 1) or (all.col == self.col and  all.row == self.row - 1):
                         self.neighbor.append(all)
 
@@ -113,6 +118,7 @@ class mena:
         self.big_pos = 0
         self.pause = False
         self.typin = False
+        self.save = False
 
 class settin:
     def __init__(self,surface, x, y, wid, hgt, label):
@@ -135,15 +141,36 @@ class settin:
             color = self.color_active
         return pygame.draw.rect(self.Surface, color, self.rect, 4)
 
+    def rend_text(self):
+        return pygame.font.Font('unifont.ttf', 17).render(self.input, True, (0,0,0))
+
+
     def lable_rend(self):
         return pygame.font.Font('unifont.ttf', 17).render(self.label, True, (0,0,0))
 
+def check_input_int(test,true = False):
+    if test != None:
+        try:
+            int(test)
+            return True
+        except ValueError:
+            return False
+    elif true == True:
+        while true:
+            live_now.screen_init()
+            pygame.init()
+            if pygame.get_init():
+                return main()
+
+
+
 def main ():
-    background = pygame.Surface(screen.get_size())
+    pygame.display.set_caption('Maze Game and Generator')
+    pygame.init()
+    background = pygame.Surface(live_now.screen.get_size())
     background.fill((0,0,0))
     game_loading = True
     game_start = False
-    press_time = 0
     stack = []
     visited = 1
     loop_de_loop = []
@@ -151,7 +178,7 @@ def main ():
     font = pygame.font.Font('unifont.ttf', 20)
     adjust_font = pygame.font.Font('unifont.ttf', 17)
     readjust_font = pygame.font.Font('unifont.ttf', 12)
-    big_menu = pygame.Surface((win_x + 60, win_y + 60))
+    big_menu = pygame.Surface((live_now.win_x + 60, live_now.win_y + 60))
     setting_list = [settin(big_menu, 130, 250, 80, 30, 'Resolution x'), settin(big_menu, 130, 350, 80, 30, 'Resolution y'), settin(big_menu, 300, 300, 80, 30, 'Column Number'), settin(big_menu, 300, 400, 80, 30, 'Row Number'), settin(big_menu, 130, 450, 80, 30, 'Cell width')]
 
     def menu(mous, mousp):
@@ -165,6 +192,7 @@ def main ():
         menu_quit_surf = pygame.Surface((40, 40))
         text = font.render(u'\u2630', True, (255,255,255))
         big_exit = font.render('Close', True, (0, 0, 0))
+        big_save = font.render('Save', True, (0, 0, 0))
         pause_text = font.render('▶', True, (255,255,255))
         settings = adjust_font.render('⚙', True, (255,255,255))
         power = readjust_font.render('⏻', True, (255,255,255))
@@ -185,25 +213,35 @@ def main ():
         surface2.blit(settings, (19, 50))
         surface2.blit(menu_quit_surf, (10, 80))
         surface2.blit(power, (22, 90))
-        screen.blit(surface2, (open.pos,0))
+        live_now.screen.blit(surface2, (open.pos,0))
         menu_surf.blit(text, (10,8))
-        screen.blit(menu_surf, (50 + open.pos, 40))
+        live_now.screen.blit(menu_surf, (50 + open.pos, 40))
         setting_list[0].render()
-        big_menu.blit(setting_list[0].lable_rend(), (20, 255))
+        button_on_liddle_menu.blit(setting_list[0].lable_rend(), (20, 255))
+        button_on_liddle_menu.blit(setting_list[0].rend_text(), (135, 255))
         setting_list[1].render()
-        big_menu.blit(setting_list[1].lable_rend(), (20, 355))
+        button_on_liddle_menu.blit(setting_list[1].lable_rend(), (20, 355))
+        button_on_liddle_menu.blit(setting_list[1].rend_text(), (135, 355))
         setting_list[2].render()
-        big_menu.blit(setting_list[2].lable_rend(), (180, 305))
+        button_on_liddle_menu.blit(setting_list[2].lable_rend(), (180, 305))
+        button_on_liddle_menu.blit(setting_list[2].rend_text(), (305, 305))
         setting_list[3].render()
-        big_menu.blit(setting_list[3].lable_rend(), (200, 405))
+        button_on_liddle_menu.blit(setting_list[3].lable_rend(), (200, 405))
+        button_on_liddle_menu.blit(setting_list[3].rend_text(), (305, 405))
         setting_list[4].render()
-        big_menu.blit(setting_list[4].lable_rend(), (20, 455))
-        screen.blit(big_menu, (0, (win_y*-1 -50 + open.big_pos)))
-
-        pygame.draw.rect(button_on_liddle_menu, (200, 50, 50), ((big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (win_x - (cols * wide))/2, (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (win_y - (rows * wide))/2 , 80, 30))
-        button_on_liddle_menu.blit(big_exit, (( 10 + big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (win_x - (rows * wide))/2,
-                                              (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (win_y - (rows * wide))/2, 80, 30))
-        screen.blit(button_on_liddle_menu, (0, (win_y * -1 - 50 + open.big_pos)))
+        button_on_liddle_menu.blit(setting_list[4].lable_rend(), (20, 455))
+        button_on_liddle_menu.blit(setting_list[4].rend_text(), (135, 455))
+        live_now.screen.blit(big_menu, (0, (live_now.win_y*-1 -50 + open.big_pos)))
+        pygame.draw.rect(button_on_liddle_menu, (50, 200, 50), (
+        (big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + (live_now.win_x - (live_now.cols * live_now.wide)) / 2,
+        (big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) + (live_now.win_y - (live_now.rows * live_now.wide)) / 2, 80, 30))
+        button_on_liddle_menu.blit(big_save, (
+        (10 + big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + (live_now.win_x - (live_now.cols * live_now.wide)) / 2,
+        (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) + (live_now.win_y - (live_now.rows * live_now.wide)) / 2, 80, 30))
+        pygame.draw.rect(button_on_liddle_menu, (200, 50, 50), ((big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (live_now.win_x - (live_now.cols * live_now.wide))/2, (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (live_now.win_y - (live_now.rows * live_now.wide))/2 , 80, 30))
+        button_on_liddle_menu.blit(big_exit, (( 10 + big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (live_now.win_x - (live_now.cols * live_now.wide))/2,
+                                              (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (live_now.win_y - (live_now.rows * live_now.wide))/2, 80, 30))
+        live_now.screen.blit(button_on_liddle_menu, (0, (live_now.win_y * -1 - 50 + open.big_pos)))
 
         if 0 < mouse[0] <= 50 and 0 < mouse[1] < 120:
             if open.alpha < 155:
@@ -222,9 +260,9 @@ def main ():
             open.open_ready = False
         if open.open == True and open.pos < -10:
             open.pos += 10
-        if open.big_open == True and open.big_pos < win_y:
+        if open.big_open == True and open.big_pos < live_now.win_y:
             open.big_pos += 50
-        elif open.big_open == False and open.big_pos > win_y*-1 -50:
+        elif open.big_open == False and open.big_pos > live_now.win_y*-1 -50:
             open.big_pos -= 50
 
         if mous != None and hasattr(mousp, 'button'):
@@ -244,93 +282,129 @@ def main ():
                 if open.open_ready == True and 0 < mous[0] <= 40 and 80 < mous[1] < 120:
                     pygame.quit()
                     main()
-                if open.big_open == True and (10 + big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) < mous[0] <= ( 10 + big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + 80 and (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) < mous[1] < (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + 30:
+                if open.big_open == True and (big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) < mous[0] <= (big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) + 80 and (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) < mous[1] < (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + 30:
                     open.big_open = False
 
-                if open.big_open == True and 130 < mous[0] <= 210 and (250 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 280 + (win_y*-1 -50 + open.big_pos):
+                if open.big_open == True and (big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) < mous[0] <= (big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) + 80 and (big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) < mous[1] < (big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) + 30:
+                    open.save = True
+
+                if open.big_open == True and 130 < mous[0] <= 210 and (250 + (live_now.win_y*-1 -50 + open.big_pos))< mous[1] <= 280 + (live_now.win_y*-1 -50 + open.big_pos):
                     for x in setting_list:
                         if x == setting_list[0]:
                             x.active = True
                         else:
                             x.active = False
-                if open.big_open == True and 130 < mous[0] <= 210 and (350 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 380 + (win_y*-1 -50 + open.big_pos):
+                if open.big_open == True and 130 < mous[0] <= 210 and (350 + (live_now.win_y*-1 -50 + open.big_pos))< mous[1] <= 380 + (live_now.win_y*-1 -50 + open.big_pos):
                     for x in setting_list:
                         if x == setting_list[1]:
                             x.active = True
                         else:
                             x.active = False
-                if open.big_open == True and 300 < mous[0] <= 380 and (300 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 330 + (win_y*-1 -50 + open.big_pos):
+                if open.big_open == True and 300 < mous[0] <= 380 and (300 + (live_now.win_y*-1 -50 + open.big_pos))< mous[1] <= 330 + (live_now.win_y*-1 -50 + open.big_pos):
                     for x in setting_list:
                         if x == setting_list[2]:
                             x.active = True
                         else:
                             x.active = False
-                if open.big_open == True and 300 < mous[0] <= 380 and (400 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 430 + (win_y*-1 -50 + open.big_pos):
+                if open.big_open == True and 300 < mous[0] <= 380 and (400 + (live_now.win_y*-1 -50 + open.big_pos))< mous[1] <= 430 + (live_now.win_y*-1 -50 + open.big_pos):
                     for x in setting_list:
                         if x == setting_list[3]:
                             x.active = True
                         else:
                             x.active = False
-                if open.big_open == True and 130 < mous[0] <= 210 and (450 + (win_y*-1 -50 + open.big_pos))< mous[1] <= 480 + (win_y*-1 -50 + open.big_pos):
+                if open.big_open == True and 130 < mous[0] <= 210 and (450 + (live_now.win_y*-1 -50 + open.big_pos))< mous[1] <= 480 + (live_now.win_y*-1 -50 + open.big_pos):
                     for x in setting_list:
                         if x == setting_list[4]:
                             x.active = True
                         else:
                             x.active = False
 
-                for 
+                for x in setting_list:
+                    if x.active == True:
+                        print(x.input)
 
 
-
-    for y in range(0,rows):
-        for x in range(0,cols):
-            grid.append(Cell(x,y))
-    for cell in grid:
+    for y in range(0,live_now.rows):
+        for x in range(0,live_now.cols):
+            live_now.grid.append(Cell(x,y))
+    for cell in live_now.grid:
         cell.find_neighbor()
         loop_de_loop.append(cell.draw_cell)
-    current = grid[0]
+    current = live_now.grid[0]
     player_is_born_in_this_foreign_land = player(current)
     pygame.key.set_repeat(50)
     while True:
-        pygame.time.Clock().tick(20)
+        if open.save == True:
+            open.save = False
+            if check_input_int(setting_list[4].input):
+                live_now.wide = int(setting_list[4].input)
+            else:
+                live_now.wide = 40
+            if check_input_int(setting_list[3].input) and check_input_int(setting_list[2].input):
+                live_now.rows = int(setting_list[3].input)
+                live_now.cols = int(setting_list[2].input)
+            else:
+                live_now.rows = 15
+                live_now.cols = 15
+            if check_input_int(setting_list[1].input) and check_input_int(setting_list[0].input):
+                live_now.win_y = int(setting_list[1].input)
+                live_now.win_x = int(setting_list[0].input)
+            else:
+                live_now.win_y = 700
+                live_now.win_x = 700
+            live_now.grid = []
+            pygame.display.quit()
+            check_input_int(None, True)
+            return
+        pygame.time.Clock().tick(30)
         mousp = None
-        if press_time > 0:
-            press_time += 1
-        if press_time > 5:
-            press_time = 0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-            if event.type == pygame.KEYDOWN and press_time == 0:
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
-                    player_is_born_in_this_foreign_land.movement_up()
-                    current = player_is_born_in_this_foreign_land.loc_get()
+            for x in setting_list:
+                if x.active == True:
+                    input_get = x
+                    input = True
 
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    player_is_born_in_this_foreign_land.movement_down()
-                    current = player_is_born_in_this_foreign_land.loc_get()
+            if event.type == pygame.KEYDOWN:
+                if open.big_open == False and game_loading == False and game_start == True:
+                    if event.key == pygame.K_UP or event.key == pygame.K_w:
+                        player_is_born_in_this_foreign_land.movement_up()
+                        current = player_is_born_in_this_foreign_land.loc_get()
 
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    player_is_born_in_this_foreign_land.movement_left()
-                    current = player_is_born_in_this_foreign_land.loc_get()
+                    if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                        player_is_born_in_this_foreign_land.movement_down()
+                        current = player_is_born_in_this_foreign_land.loc_get()
 
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    player_is_born_in_this_foreign_land.movement_right()
-                    current = player_is_born_in_this_foreign_land.loc_get()
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                        player_is_born_in_this_foreign_land.movement_left()
+                        current = player_is_born_in_this_foreign_land.loc_get()
+
+                    if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                        player_is_born_in_this_foreign_land.movement_right()
+                        current = player_is_born_in_this_foreign_land.loc_get()
+                elif open.big_open == True:
+                    if input == True:
+                        if event.key == pygame.K_RETURN:
+                            input_get.active = False
+                        elif event.key == pygame.K_BACKSPACE:
+                            input_get.input = input_get.input[:-1]
+                        else:
+                            input_get.input += event.unicode
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousp = event
 
 
-        screen.blit(background, (0,0))
+        live_now.screen.blit(background, (0,0))
         next_cell = current.find_next()
         for x in loop_de_loop:
             x()
         if game_loading is True and game_start is False:
             if current.visited:
-                pygame.draw.rect(screen, (255, 255, 150, 100), current.char_size())
+                pygame.draw.rect(live_now.screen, (255, 255, 150, 100), current.char_size())
             else:
-                pygame.draw.rect(screen, (130, 130, 255, 100), current.char_size())
+                pygame.draw.rect(live_now.screen, (130, 130, 255, 100), current.char_size())
             current.visited = True
             if open.pause == False:
                 if next_cell is not None:
@@ -354,11 +428,11 @@ def main ():
                     if len(stack) > 0:
                         current = stack.pop()
 
-            if visited == rows*cols and current == grid[0]:
+            if visited == live_now.rows*live_now.cols and current == live_now.grid[0]:
                 game_loading = False
                 game_start = True
         if game_loading is False and game_start is True:
-            pygame.draw.rect(screen, (77, 255, 136, 100), (current.x, current.y, wide, wide ))
+            pygame.draw.rect(live_now.screen, (77, 255, 136, 100), (current.x, current.y, live_now.wide, live_now.wide ))
         if hasattr(mousp, 'pos'):
             menu(mousp.pos, mousp)
         else:
