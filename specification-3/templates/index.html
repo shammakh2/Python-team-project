@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        a {
+            color: coral;
+            font-family: Verdana;
+            font-size: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-family: Verdana;
+            font-size: 50px;
+            border-bottom: 6px solid coral;
+            background-color: lightgrey;
+        }
+        p{
+            text-align: justify;
+            color: black;
+            font-family: Verdana;
+            font-size: 20px;
+        }
+        div{
+            max-width: 900px;
+            min-width: 200px;
+            padding-left: 2%;
+            padding-right: 2%;
+            text-align: center;
+            margin: auto;
+        }
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ title }} - Team 48</title>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a><a> | </a>
+            <a href="{{ url_for('page_1') }}">Specification 1</a><a> | </a>
+            <a href="{{ url_for('page_2') }}">Specification 2</a><a> | </a>
+            <a href="{{ url_for('page_3') }}">Specification 3</a><a> | </a>
+            <a href="{{ url_for('page_4') }}">Specification 4</a>
+        </div>
+    </head>
+    <body>
+    <div>
+        <h1>{{ header }}</h1>
+        <p>README:</p>
+        <textarea id="message_part" rows="25" cols="100" readonly>There should be a message here. Is JavaScript running?</textarea><br>
+        <p>Code:</p>
+        <textarea id="code_part"rows="25" cols="100" readonly>There should be a message here. Is JavaScript running?</textarea>
+        <script>
+            //{{ code }} is the python variable passed to the javaScript. .replace('&amp;#10;','&#10;') prevents javascript from automatically converting my newline code into text
+            document.getElementById("message_part").innerHTML= "{{ message }}".replace(/&amp;#10;/g,'&#10;');
+            document.getElementById("code_part").innerHTML= "{{ code }}".replace(/&amp;#10;/g,'&#10;');
+        </script>
+    </div>
+    </body>
+</html>
