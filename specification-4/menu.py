@@ -1,7 +1,7 @@
 # Import of Dependencies
 import pygame
 import sys
-#from .maze import start
+import maze
 
 # Initialises PyGame and sets variables.
 pygame.init()
@@ -68,7 +68,6 @@ class Label(Text):  # Child class for Label Instances.
     def __init__(self, content, surface):
         super().__init__(content, surface)
 
-
 # Defining instances of text.
 title = Title("Specification 4", (280, 100))
 mazebuttontext = Label("Maze Generator", (370, 330))
@@ -84,8 +83,8 @@ descriptionl2.render()
 # Updates PyGame display at the end to keep things up-to-date.
 pygame.display.update()
 
-# Loop to close the game
-while True:
+# Loop to update button
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -93,11 +92,24 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
             if mazebutton.collidepoint(pos):
-                print("Pew!")# start()
-        elif event.type == pygame.MOUSEMOTION:
-            if mazebutton.collidepoint(pygame.mouse.get_pos()):
-                print("Test")
-            else:
-                pass
-        else:
-            pass
+                wide = 50
+                win_x = (wide * 20) + 3
+                win_y = (wide * 20) + 3
+                screen = pygame.display.set_mode((win_x, win_y))
+                pygame.display.set_caption('Maze Generator')
+                maze.main()
+        elif pygame.mouse.get_pos():
+            pos1 = pygame.mouse.get_pos()
+            status = False
+            if mazebutton.collidepoint(pos1):
+                if mazebutton != pygame.draw.rect(menuScreen, (255, 0, 0), (299, 249, 402, 202)):
+                    mazebutton = pygame.draw.rect(menuScreen, (255, 0, 0), (299, 249, 402, 202))
+                    mazebuttontext.render()
+                    pygame.display.update()
+            elif mazebutton != pygame.draw.rect(surface, rectColor, (300, 250, rectWidth, rectHeight)):
+                mazebutton = pygame.draw.rect(surface, rectColor, (300, 250, rectWidth, rectHeight))
+                mazebuttontext.render()
+                pygame.display.update()
+
+
+
