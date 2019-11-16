@@ -1,12 +1,12 @@
 import pygame
 import random
-from win32api import GetSystemMetrics
+import tkinter
 
 class Dad_of_All:
     def __init__(self):
-        self.wide = 40
-        self.rows = 15
-        self.cols = 15
+        self.wide = 35
+        self.rows = 18
+        self.cols = 18
         self.win_x = 700
         self.win_y = 700
         self.grid = []
@@ -26,6 +26,7 @@ class Cell:
         self.x = self.col * live_now.wide + ((live_now.win_x) - (live_now.cols * live_now.wide))/2
         self.y = self.row * live_now.wide + ((live_now.win_y) - (live_now.rows * live_now.wide))/2
         self.neighbor = []
+        self.win_block = False
 
     def __str__(self):
         return f"I am Col {self.col} and Row {self.row}"
@@ -34,6 +35,8 @@ class Cell:
 
         if self.visited == True:
             pygame.draw.rect(live_now.screen, (70, 70, 70, 255), self.loc())
+        if self.win_block == True:
+            pygame.draw.rect(live_now.screen, (90, 10, 10, 255), self.loc())
         if self.sides[0]:
             pygame.draw.line(live_now.screen, (128,128,255), (self.x,self.y), (self.x+live_now.wide,self.y), 3) #Top
         if self.sides[1]:
@@ -68,6 +71,7 @@ class Cell:
 class player:
     def __init__(self, current):
         self.__on_cell = current
+        self.win_condition = False
 
     def __str__(self):
         return f"This is on {self.__on_cell.col} and {self.__on_cell.row}"
@@ -231,17 +235,17 @@ def main ():
         setting_list[4].render()
         button_on_liddle_menu.blit(setting_list[4].lable_rend(), (20, 455))
         button_on_liddle_menu.blit(setting_list[4].rend_text(), (135, 455))
-        live_now.screen.blit(big_menu, (0, (live_now.win_y*-1 -50 + open.big_pos)))
+        live_now.screen.blit(big_menu, (0, (big_menu.get_height()*-1 + open.big_pos)))
         pygame.draw.rect(button_on_liddle_menu, (50, 200, 50), (
-        (big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + (live_now.win_x - (live_now.cols * live_now.wide)) / 2,
-        (big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) + (live_now.win_y - (live_now.rows * live_now.wide)) / 2, 80, 30))
+        (live_now.win_x - live_now.win_x * 0.55),
+        (live_now.win_y - (big_menu.get_height()*-1 + open.big_pos) - live_now.win_y * 0.25), 80, 30))
         button_on_liddle_menu.blit(big_save, (
-        (10 + big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + (live_now.win_x - (live_now.cols * live_now.wide)) / 2,
-        (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) + (live_now.win_y - (live_now.rows * live_now.wide)) / 2, 80, 30))
-        pygame.draw.rect(button_on_liddle_menu, (200, 50, 50), ((big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (live_now.win_x - (live_now.cols * live_now.wide))/2, (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (live_now.win_y - (live_now.rows * live_now.wide))/2 , 80, 30))
-        button_on_liddle_menu.blit(big_exit, (( 10 + big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + (live_now.win_x - (live_now.cols * live_now.wide))/2,
-                                              (5 + big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + (live_now.win_y - (live_now.rows * live_now.wide))/2, 80, 30))
-        live_now.screen.blit(button_on_liddle_menu, (0, (live_now.win_y * -1 - 50 + open.big_pos)))
+        (10 + live_now.win_x - live_now.win_x * 0.55),
+        (5 + live_now.win_y - (big_menu.get_height()*-1 + open.big_pos) - live_now.win_y * 0.25), 80, 30))
+        pygame.draw.rect(button_on_liddle_menu, (200, 50, 50), ((live_now.win_x - live_now.win_x*0.40), (live_now.win_y - (big_menu.get_height()*-1 + open.big_pos) - live_now.win_y *0.25), 80, 30))
+        button_on_liddle_menu.blit(big_exit, (( 10 + live_now.win_x - live_now.win_x*0.40),
+                                              (5 + live_now.win_y - (big_menu.get_height()*-1 + open.big_pos) -  live_now.win_y *0.25), 80, 30))
+        live_now.screen.blit(button_on_liddle_menu, (0, ((big_menu.get_height()*-1 + open.big_pos))))
 
         if 0 < mouse[0] <= 50 and 0 < mouse[1] < 120:
             if open.alpha < 155:
@@ -262,7 +266,7 @@ def main ():
             open.pos += 10
         if open.big_open == True and open.big_pos < live_now.win_y:
             open.big_pos += 50
-        elif open.big_open == False and open.big_pos > live_now.win_y*-1 -50:
+        elif open.big_open == False and open.big_pos > 0:
             open.big_pos -= 50
 
         if mous != None and hasattr(mousp, 'button'):
@@ -282,10 +286,10 @@ def main ():
                 if open.open_ready == True and 0 < mous[0] <= 40 and 80 < mous[1] < 120:
                     pygame.quit()
                     main()
-                if open.big_open == True and (big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) < mous[0] <= (big_menu.get_rect()[2] - big_menu.get_rect()[2]*0.40) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) + 80 and (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) < mous[1] < (big_menu.get_rect()[3] - big_menu.get_rect()[3]*0.25) + 30:
+                if open.big_open == True and (live_now.win_x - live_now.win_x*0.40) < mous[0] <= (live_now.win_x - live_now.win_x*0.40) + 80 and (live_now.win_y - live_now.win_y *0.25) < mous[1] < (live_now.win_y - live_now.win_y *0.25) + 30:
                     open.big_open = False
 
-                if open.big_open == True and (big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) < mous[0] <= (big_menu.get_rect()[2] - big_menu.get_rect()[2] * 0.55) + ((live_now.win_x - (live_now.cols * live_now.wide))/2) + 80 and (big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) < mous[1] < (big_menu.get_rect()[3] - big_menu.get_rect()[3] * 0.25) + 30:
+                if open.big_open == True and (live_now.win_x - live_now.win_x* 0.55) < mous[0] <= (live_now.win_x - live_now.win_x * 0.55) + 80 and (live_now.win_y - live_now.win_y * 0.25) < mous[1] < (live_now.win_y - live_now.win_y * 0.25) + 30:
                     open.save = True
 
                 if open.big_open == True and 130 < mous[0] <= 210 and (250 + (live_now.win_y*-1 -50 + open.big_pos))< mous[1] <= 280 + (live_now.win_y*-1 -50 + open.big_pos):
@@ -331,32 +335,75 @@ def main ():
         cell.find_neighbor()
         loop_de_loop.append(cell.draw_cell)
     current = live_now.grid[0]
+    live_now.grid[-1].win_block = True
     player_is_born_in_this_foreign_land = player(current)
     pygame.key.set_repeat(50)
     while True:
         if open.save == True:
             open.save = False
+            win_x = None
+            win_y = None
+            cols = None
+            rows = None
+            wide = None
+            ideal_ratio = (round(int(tkinter.Tk().winfo_screenheight() / 100)) * 100)
             if check_input_int(setting_list[4].input):
-                live_now.wide = int(setting_list[4].input)
-            else:
-                live_now.wide = 40
+                wide = int(setting_list[4].input)
             if check_input_int(setting_list[3].input) and check_input_int(setting_list[2].input):
-                live_now.rows = int(setting_list[3].input)
-                live_now.cols = int(setting_list[2].input)
-            else:
-                live_now.rows = 15
-                live_now.cols = 15
+                if int(setting_list[2].input) <= 50 and int(setting_list[3].input) <= 50:
+                    cols = int(setting_list[2].input)
+                    rows = int(setting_list[3].input)
             if check_input_int(setting_list[1].input) and check_input_int(setting_list[0].input):
-                live_now.win_y = int(setting_list[1].input)
-                live_now.win_x = int(setting_list[0].input)
+                win_x = int(setting_list[0].input)
+                win_y = int(setting_list[1].input)
+
+            if win_x != None or win_y != None:
+                if win_x > ideal_ratio or win_y > ideal_ratio:
+                    win_y = (round(int(tkinter.Tk().winfo_screenheight() / 100)) * 100)
+                    win_x = (round(int(tkinter.Tk().winfo_screenheight() / 100)) * 100)
+                    live_now.win_y = win_y
+                    live_now.win_x = win_x
+                else:
+                    live_now.win_y = win_y
+                    live_now.win_x = win_x
             else:
-                live_now.win_y = 700
-                live_now.win_x = 700
+                win_y = (round(int(tkinter.Tk().winfo_screenheight() / 100)) * 100)
+                win_x = (round(int(tkinter.Tk().winfo_screenheight() / 100)) * 100)
+                live_now.win_y = win_y
+                live_now.win_x = win_x
+            if cols != None or rows != None:
+                if cols > 50 or rows > 50:
+                    cols = 20
+                    rows = 20
+                    live_now.rows = rows
+                    live_now.cols = cols
+                else:
+                    live_now.rows = rows
+                    live_now.cols = cols
+            else:
+                cols = 20
+                rows = 20
+                live_now.rows = rows
+                live_now.cols = cols
+
+            if wide != None:
+                if wide > min((win_x/cols), (win_y/rows)):
+                    wide = min((win_x/cols), (win_y/rows))
+                    live_now.wide = wide
+                else:
+                    live_now.wide = wide
+            else:
+                wide = min((win_x / cols), (win_y / rows))
+                live_now.wide = wide
+
+            print(win_y)
+            print(ideal_ratio)
+
             live_now.grid = []
             pygame.display.quit()
             check_input_int(None, True)
             return
-        pygame.time.Clock().tick(30)
+        pygame.time.Clock().tick(60)
         mousp = None
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -367,7 +414,7 @@ def main ():
                     input = True
 
             if event.type == pygame.KEYDOWN:
-                if open.big_open == False and game_loading == False and game_start == True:
+                if open.big_open == False and game_loading == False and game_start == True and player_is_born_in_this_foreign_land.win_condition == False:
                     if event.key == pygame.K_UP or event.key == pygame.K_w:
                         player_is_born_in_this_foreign_land.movement_up()
                         current = player_is_born_in_this_foreign_land.loc_get()
@@ -433,6 +480,10 @@ def main ():
                 game_start = True
         if game_loading is False and game_start is True:
             pygame.draw.rect(live_now.screen, (77, 255, 136, 100), (current.x, current.y, live_now.wide, live_now.wide ))
+            if player_is_born_in_this_foreign_land.loc_get() == live_now.grid[-1]:
+                player_is_born_in_this_foreign_land.win_condition = True
+            if player_is_born_in_this_foreign_land.win_condition == True:
+                live_now.screen.blit(pygame.image.load('win.jpg'), (live_now.win_x/2 - 300/2, live_now.win_y/2 - 180/2))
         if hasattr(mousp, 'pos'):
             menu(mousp.pos, mousp)
         else:
