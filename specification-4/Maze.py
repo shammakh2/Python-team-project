@@ -94,8 +94,6 @@ class player:
             if x.col == self.__on_cell.col and x.row == self.__on_cell.row + 1:
                 if self.__on_cell.sides[2] is False:
                     self.__on_cell = x
-                    print(f"x: {self.__on_cell.x}  y: {self.__on_cell.y}")
-                    print('down')
 
 
 
@@ -110,7 +108,6 @@ class player:
             if x.row == self.__on_cell.row and x.col == self.__on_cell.col + 1:
                 if self.__on_cell.sides[1] is False:
                     self.__on_cell = x
-                    print('right')
 
 class mena:
     def __init__(self):
@@ -323,10 +320,6 @@ def main ():
                         else:
                             x.active = False
 
-                for x in setting_list:
-                    if x.active == True:
-                        print(x.input)
-
 
     for y in range(0,live_now.rows):
         for x in range(0,live_now.cols):
@@ -395,9 +388,6 @@ def main ():
             else:
                 wide = min((win_x / cols), (win_y / rows))
                 live_now.wide = wide
-
-            print(win_y)
-            print(ideal_ratio)
 
             live_now.grid = []
             pygame.display.quit()
