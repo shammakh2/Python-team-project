@@ -51,8 +51,9 @@ If you leave all the inputs empty, it will load the best possible settings for y
 If you press the Close button, it will close the settings menu.
 
 ***Note:** All values in settings are optional. If you leave some values empty or enter wrong values. The program will
-give priority to your entered values and set the others to the best possible for your system or default values.
+give priority to your entered values and set the others to the best possible for your system or default values.*
 
 <h6> Quit button </h6>
+
 Pressing the Quit button will quit the game.
 
