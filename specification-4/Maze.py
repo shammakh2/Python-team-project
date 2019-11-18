@@ -14,6 +14,20 @@ class Dad_of_All:
     def screen_init(self):
         self.screen = pygame.display.set_mode((self.win_x, self.win_y))
 
+    def ticks(self):
+        if self.rows * self.cols > 750:
+            self.tick = 200
+            return self.tick
+        elif 400 < self.rows * self.cols <= 750:
+            self.tick = 130
+            return self.tick
+        elif 200 < self.rows * self.cols <= 400:
+            self.tick = 60
+            return self.tick
+        elif 0 < self.rows * self.cols <= 200:
+            self.tick = 30
+            return self.tick
+
 live_now = Dad_of_All()
 live_now.screen_init()
 
@@ -393,7 +407,6 @@ def main ():
             pygame.display.quit()
             check_input_int(None, True)
             return
-        pygame.time.Clock().tick(60)
         mousp = None
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -438,6 +451,7 @@ def main ():
         for x in loop_de_loop:
             x()
         if game_loading is True and game_start is False:
+            pygame.time.Clock().tick(live_now.ticks())
             if current.visited:
                 pygame.draw.rect(live_now.screen, (255, 255, 150, 100), current.char_size())
             else:
@@ -469,6 +483,7 @@ def main ():
                 game_loading = False
                 game_start = True
         if game_loading is False and game_start is True:
+            pygame.time.Clock().tick(30)
             pygame.draw.rect(live_now.screen, (77, 255, 136, 100), (current.x, current.y, live_now.wide, live_now.wide ))
             if player_is_born_in_this_foreign_land.loc_get() == live_now.grid[-1]:
                 player_is_born_in_this_foreign_land.win_condition = True
