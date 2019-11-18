@@ -1,47 +1,58 @@
-### Specification 4
+<h1>Backtracking Maze Generator</h1>
 
-In this challenge it is up to you to choose a Python library that
-hasn't been mentioned before in the previous challenges and develop a
-software artefact around that library. The software artefact should
-make use of some of the skills you have learned so far in CSC1031,
-CSC1032, CSC1033, and CSC1034 so that it clearly displays your
-programming and theoretical abilities.
+<h4>1.Introduction</h4>
+This program made as a part of specification 4 is a depth first maze generator game.
+You can launch up the file using the following code in the specification 4 directory
 
-This challenge has complete creative freedom. Meaning, you can build
-anything you like as long as it doesn't make use of an aforementioned
-library in the previous challenges.
+    python Maze.py
+    
+The program will use a head pointer to carve out a random path in the grid every time.
 
-#### Objectives
+***Note:** It will take a longer time to generate larger mazes*
 
-* Investigate Python libraries to focus your solution around.
-* Plan your solution before development.
-* Develop your program solution.
-* Test your program.
+<h4>Player and the Goal</h4>
+Once the maze is generated, the head pointer will return back to the top left corner of the screen
+and change to green color.
 
-#### Learning Outcomes
+When it turns green, it is time to play.
+The goal for you is to guide the head pointer to red marked square on the bottom right corner of the 
+screen to win the game.
 
-* To be able to investigate a library's documentation page to produce
-  code that satisfies the objective.
-* To be able to refine your investigation and avoid obfuscation.
-* To be able to produce a program that isn't centred around a problem
-  specification, allowing you to be creative with your solution.
-* To be able to manage your time effectively by clearly planning the
-  project before development.
+<h6> Controls </h6>
 
-#### Concepts to consider
+`Move up    =  UP Arrow key or "w" key`
 
-* Everything in CSC1031, CSC1032, CSC1033, CSC1034
+`Move down  =  DOWN Arrow key or "s" key`
 
-#### Libraries to investigate
+`Move left  =  LEFT Arrow key or "a" key`
 
-Here are some links to pages that rate the top used Python libraries;
-be aware that not all libraries might be suitable due to density
-and/or technical limitations.
+`Move right =  RIGHT Arrow key or "d" key`
 
-* Links: 
-  * [20 Python libraries you can’t live
-  without](https://pythontips.com/2013/07/30/20-python-libraries-you-cant-live-without/)
-  * [17 Best Python
-  Libraries](https://medium.com/issuehunt/17-best-python-libraries-f555546ed4e9)
-  * [Top 10 Python Libraries You Must Know In
-  2019](https://www.edureka.co/blog/python-libraries/)
+<h4> Configuration and Extra functionality</h4>
+
+<h5> The Menu </h5>
+Bring your cursor over to the top left corner of the screen and you will find a menu button. 
+
+Clicking the menu button will give you the following options:
+
+<h6> Pause the program </h6>
+
+To pause the program, press the first button ( "▶" button) and it will stop the generator.
+
+<h6> The settings menu </h6>
+The second button ( "⚙" button) will lead you to the settings
+
+In the settings menu, you can change the Resolution X (width) and Resolution Y (height) of the screen in pixels.
+You can also add the number rows and columns and the width (in pixels) of the cells.
+
+Pressing Save will reload the generator with all your inputs
+If you leave all the inputs empty, it will load the best possible settings for your system.
+
+If you press the Close button, it will close the settings menu.
+
+***Note:** All values in settings are optional. If you leave some values empty or enter wrong values. The program will
+give priority to your entered values and set the others to the best possible for your system or default values.
+
+<h6> Quit button </h6>
+Pressing the Quit button will quit the game.
+
