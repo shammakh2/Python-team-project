@@ -1,7 +1,7 @@
 # Import of Dependencies
 import pygame
 import sys
-import maze
+import Maze
 
 # Initialises PyGame and sets variables.
 pygame.init()
@@ -92,12 +92,10 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
             if mazebutton.collidepoint(pos):
-                wide = 50
-                win_x = (wide * 20) + 3
-                win_y = (wide * 20) + 3
-                screen = pygame.display.set_mode((win_x, win_y))
+
                 pygame.display.set_caption('Maze Generator')
-                maze.main()
+                pygame.quit()
+                Maze.check_input_int(None, True)
         elif pygame.mouse.get_pos():
             pos1 = pygame.mouse.get_pos()
             status = False
