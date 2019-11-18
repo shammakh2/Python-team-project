@@ -4,6 +4,7 @@ import os
 import argparse
 
 def create_thumbnails(args):
+    """Convert images to JPEG thumbnails and appropriately name them"""
     size = 300, 300
     files = os.listdir(r'C:\Users\b9035266\PycharmProjects\practical-3\specification-2\images')
     counter = 0
@@ -20,6 +21,7 @@ def create_thumbnails(args):
         counter += 1
 
 def gaussian_blur(args):
+    """Apply the gaussian blur filter to the specified images"""
     thumbnails = os.listdir(r'C:\Users\b9035266\PycharmProjects\practical-3\specification-2\thumbnails')
     counter = 0
     for f in thumbnails:
@@ -33,7 +35,7 @@ def gaussian_blur(args):
 
 
 def color_conversion(args):
-    #take pixels of {color} and convert them to another {color}
+    """Take pixels of {color} and convert them to another {color}"""
     thumbnails = os.listdir(r'C:\Users\b9035266\PycharmProjects\practical-3\specification-2\thumbnails')
 
     colors = {
@@ -60,7 +62,7 @@ def color_conversion(args):
         counter += 1
 
 def run():
-
+    """Adding the needed parsers/subparsers"""
     parser = argparse.ArgumentParser(prog="img_manip")
     subparsers = parser.add_subparsers(help="Sub Command Help")
 
@@ -76,6 +78,5 @@ def run():
 
     args = parser.parse_args()
     args.func(args)
-
 
 run()
